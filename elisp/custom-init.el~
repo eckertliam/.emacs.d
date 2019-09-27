@@ -1,0 +1,21 @@
+;;; custom-init.el --- Loads up Emacs
+
+;;; Commentary:
+;; An optimized Emacs config
+;; Author: Liam Eckert <liameckert17@gmail.com>
+
+
+;;; Code:
+
+(defun get-fullpath (@file-relative-path)
+  (concat (file-name-directory (or load-file-name buffer-file-name)) @file-relative-path))
+
+(load (get-fullpath "init-settings"))
+(load (get-fullpath "package-settings"))
+(load (get-fullpath "base-settings"))
+(load (get-fullpath "visual-packs"))
+(load (get-fullpath "devel-packs"))
+(load (get-fullpath "rust-packs"))
+
+
+;;; custom-init.el ends here
