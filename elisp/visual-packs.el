@@ -10,7 +10,7 @@
 (use-package doom-themes
   :ensure t
   :config
-  (load-theme 'doom-challenger-deep t)
+  (load-theme 'doom-nord t)
   (doom-themes-visual-bell-config))
 
 (use-package doom-modeline

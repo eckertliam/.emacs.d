@@ -10,12 +10,15 @@
 (defun get-fullpath (@file-relative-path)
   (concat (file-name-directory (or load-file-name buffer-file-name)) @file-relative-path))
 
-(load (get-fullpath "init-settings"))
-(load (get-fullpath "package-settings"))
-(load (get-fullpath "base-settings"))
-(load (get-fullpath "visual-packs"))
-(load (get-fullpath "devel-packs"))
-(load (get-fullpath "rust-packs"))
+(load (get-fullpath "init-settings.el"))
+(load (get-fullpath "package-settings.el"))
+(load (get-fullpath "base-settings.el"))
+(load (get-fullpath "visual-packs.el"))
+(load (get-fullpath "devel-packs.el"))
+(load (get-fullpath "rust-packs.el"))
+(load (get-fullpath "python-packs.el"))
+(load (get-fullpath "org-settings.el"))
+
 
 (provide 'init-el)
 

@@ -7,7 +7,7 @@
 
 ;;; Code:
 
-(load "~/.emacs.d/elisp/custom-init")
+(load "~/.emacs.d/elisp/custom-init.el")
 
 
 ;;; init.el ends here
@@ -18,7 +18,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (golden-ratio which-key use-package smartparens rich-minority racer powerline helm-projectile flycheck-rust doom-themes doom-modeline diminish crux company cargo))))
+    (elpy golden-ratio which-key use-package smartparens rich-minority racer powerline helm-projectile flycheck-rust doom-themes doom-modeline diminish crux company cargo))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
