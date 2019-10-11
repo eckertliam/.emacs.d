@@ -36,6 +36,15 @@
   kept-old-versions 2
   version-control t)
 
+(if (y-or-n-p "Would you like to make a journal entry?")
+    (progn
+      (org-capture)
+    )
+  (progn
+    (print "Enjoy your day!")
+  )
+)
+
 (provide 'base-settings)
 
 ;;; base-settings.el ends here

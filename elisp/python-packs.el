@@ -10,6 +10,7 @@
 
 (use-package elpy
   :ensure t
+  :after flycheck
   :init
   (elpy-enable)
   :config
@@ -17,6 +18,7 @@
 
 (use-package py-autopep8
   :ensure t
+  :after elpy
   :config (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save))
 
 

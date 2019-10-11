@@ -47,6 +47,7 @@
 
 (use-package projectile
   :ensure t
+  :after helm
   :diminish projectile-mode
   :bind
   (("C-c p f" . helm-projectile-find-file)
@@ -77,6 +78,7 @@
 
 (use-package helm-projectile
   :ensure t
+  :after helm
   :config
   (helm-projectile-on))
 

@@ -2,3 +2,8 @@
 elpa/*
 saves/*
 *.eld
+session.*
+url/*
+auto-save-list/*
+elpy/*
+bookmarks/*

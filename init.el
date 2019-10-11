@@ -16,6 +16,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(org-agenda-files (quote ("~/org/todo.org")))
  '(package-selected-packages
    (quote
     (elpy golden-ratio which-key use-package smartparens rich-minority racer powerline helm-projectile flycheck-rust doom-themes doom-modeline diminish crux company cargo))))

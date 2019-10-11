@@ -12,13 +12,12 @@
 
 (load (get-fullpath "init-settings.el"))
 (load (get-fullpath "package-settings.el"))
-(load (get-fullpath "base-settings.el"))
 (load (get-fullpath "visual-packs.el"))
 (load (get-fullpath "devel-packs.el"))
 (load (get-fullpath "rust-packs.el"))
 (load (get-fullpath "python-packs.el"))
 (load (get-fullpath "org-settings.el"))
-
+(load (get-fullpath "base-settings.el"))
 
 (provide 'init-el)
 
