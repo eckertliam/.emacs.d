@@ -36,14 +36,7 @@
   kept-old-versions 2
   version-control t)
 
-(if (y-or-n-p "Would you like to make a journal entry?")
-    (progn
-      (org-capture)
-    )
-  (progn
-    (print "Enjoy your day!")
-  )
-)
+(set-frame-font "Hack 10" nil t)
 
 (provide 'base-settings)
 

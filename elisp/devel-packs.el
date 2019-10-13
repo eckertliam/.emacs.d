@@ -89,6 +89,12 @@
   (setq ivy-use-virtual-buffers t)
   (setq enable-recursive-minibuffers t))
 
+(use-package neotree
+  :ensure t
+  :config
+  (global-set-key [f8] 'neotree-toggle)
+  (doom-themes-neotree-config))
+
 (provide 'devel-packs)
 
 ;;; devel-packs.el ends here

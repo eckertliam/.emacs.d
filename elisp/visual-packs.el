@@ -11,7 +11,8 @@
   :ensure t
   :config
   (load-theme 'doom-nord t)
-  (doom-themes-visual-bell-config))
+  (doom-themes-visual-bell-config)
+  (doom-themes-org-config))
 
 (use-package doom-modeline
   :ensure t
@@ -24,6 +25,7 @@
 (use-package golden-ratio
   :ensure t
   :config (golden-ratio-mode 1))
+
 
 (provide 'visual-packs)
 
