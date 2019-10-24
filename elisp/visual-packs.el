@@ -7,16 +7,16 @@
 
 ;;; Code:
 
-(use-package doom-themes
+(use-package nord-theme
   :ensure t
-  :config
-  (load-theme 'doom-nord t)
-  (doom-themes-visual-bell-config)
-  (doom-themes-org-config))
+  :config (load-theme 'nord t))
 
 (use-package doom-modeline
   :ensure t
-  :hook (after-init . doom-modeline-mode))
+  :hook (after-init . doom-modeline-mode)
+  :config
+  (setq doom-modeline-major-mode-color-icon nil)
+  (setq doom-modeline-env-version nil))
 
 
 (use-package all-the-icons

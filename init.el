@@ -19,7 +19,7 @@
  '(org-agenda-files (quote ("~/org/todo.org")))
  '(package-selected-packages
    (quote
-    (elpy golden-ratio which-key use-package smartparens rich-minority racer powerline helm-projectile flycheck-rust doom-themes doom-modeline diminish crux company cargo))))
+    (nord-theme elpy golden-ratio which-key use-package smartparens rich-minority racer powerline helm-projectile flycheck-rust doom-modeline diminish crux company cargo))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

@@ -92,8 +92,7 @@
 (use-package neotree
   :ensure t
   :config
-  (global-set-key [f8] 'neotree-toggle)
-  (doom-themes-neotree-config))
+  (global-set-key [f8] 'neotree-toggle))
 
 (provide 'devel-packs)
 

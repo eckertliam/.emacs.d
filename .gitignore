@@ -7,3 +7,5 @@ url/*
 auto-save-list/*
 elpy/*
 bookmarks/*
+#.*
+*.el#

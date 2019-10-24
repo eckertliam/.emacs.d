@@ -18,6 +18,7 @@
 (load (get-fullpath "python-packs.el"))
 (load (get-fullpath "org-settings.el"))
 (load (get-fullpath "base-settings.el"))
+(load (get-fullpath "commonlisp.el"))
 
 (provide 'init-el)
 
