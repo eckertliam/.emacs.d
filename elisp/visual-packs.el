@@ -7,9 +7,11 @@
 
 ;;; Code:
 
-(use-package nord-theme
+(use-package doom-themes
   :ensure t
-  :config (load-theme 'nord t))
+  :config
+  (load-theme 'doom-nord t)
+  (doom-themes-visual-bell-config))
 
 (use-package doom-modeline
   :ensure t
