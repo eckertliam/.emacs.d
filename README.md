@@ -1,3 +1,4 @@
 # .emacs.d
-My Emacs distrubition. Right now it is only a simple modest 
-Emacs distrubition but I plan to slowly grow it as I get the hang of elisp.
+### Liam Eckert
+The new branch of my emacs distrubition more optimized and self designed over package
+dependencies. Eventually I will come up with a name for it I guess.
