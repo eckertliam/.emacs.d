@@ -9,3 +9,6 @@ elpy/*
 bookmarks/*
 #.*
 *.el#
+irony/*
+recentf
+transient/*
