@@ -5,7 +5,8 @@
 
 ;;; Code:
 
-
-
+(load (get-fullpath "package.el"))
+(load (get-fullpath "base.el"))
+(load (get-fullpath "completion.el"))
 
 ;;; loader.el ends here
