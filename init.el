@@ -33,7 +33,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (nordless-theme which-key use-package smartparens slime racer py-autopep8 nord-theme neotree magit ivy irony-eldoc helm-projectile haskell-mode golden-ratio flycheck-rust flycheck-irony elpy doom-themes doom-modeline diminish crux company-racer company-irony cargo))))
+    (mood-line nord-theme magit smartparens flycheck company helm use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

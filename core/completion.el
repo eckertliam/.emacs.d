@@ -37,4 +37,16 @@
   :config
   (add-hook 'after-init-hook #'global-flycheck-mode))
 
+(use-package smartparens
+  :ensure t
+  :config
+  (progn
+    (require 'smartparens-config)
+    (smartparens-global-mode 1)
+    (show-paren-mode t)))
+
+(use-package magit
+  :ensure t
+  :bind (("C-M-g" . magit-status)))
+
 ;;; completion.el ends here
