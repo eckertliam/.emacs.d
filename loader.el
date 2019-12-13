@@ -12,10 +12,12 @@
 
 ;; Variables for optional languages mark true if used
 
-(defvar use-rust t)
+(let ((use-rust t))
+  (if use-rust
+      (load (get-fullpath "languages/rust.el"))))
 
-(if use-rust
-    (load (get-fullpath "languages/rust.el")))
-
+(let ((use-ocaml t))
+  (if use-ocaml
+      (load (get-fullpath "languages/ocaml.el"))))
 
 ;;; loader.el ends here
