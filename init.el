@@ -20,7 +20,7 @@
   "Gets path relative to call location of FILE-RELATIVE-PATH."
   (concat (file-name-directory (or load-file-name buffer-file-name)) file-relative-path))
 
-(load (get-fullpath "./core/loader.el"))
+(load (get-fullpath "loader.el"))
 
 ;; Default garbage collection threshold
 (add-hook 'after-init-hook (lambda () (setq gc-cons-threshold 800000)))
