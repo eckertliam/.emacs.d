@@ -33,7 +33,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (merlin tuareg mood-line nord-theme magit smartparens flycheck company helm use-package))))
+    (racket-mode merlin tuareg mood-line nord-theme magit smartparens flycheck company helm use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

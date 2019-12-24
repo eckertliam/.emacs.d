@@ -20,4 +20,8 @@
   (if use-ocaml
       (load (get-fullpath "languages/ocaml.el"))))
 
+(let ((use-racket t))
+  (if use-racket
+      (load (get-fullpath "languages/racket.el"))))
+
 ;;; loader.el ends here
