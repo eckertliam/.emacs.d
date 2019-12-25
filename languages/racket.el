@@ -6,8 +6,6 @@
 ;;; Code:
 
 (use-package racket-mode
-  :ensure t
-  :config
-  (racket-mode-start-faster))
+  :ensure t)
 
 ;;; racket.el ends here
