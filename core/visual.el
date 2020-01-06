@@ -5,13 +5,16 @@
 
 ;;; Code:
 
-(use-package nord-theme
-  :ensure t
-  :config (load-theme 'nord t))
-
-(use-package mood-line
+(use-package doom-themes
   :ensure t
   :config
-  (mood-line-mode 1))
+  (load-theme 'doom-nord t))
+
+(use-package all-the-icons
+  :ensure t)
+
+(use-package doom-modeline
+  :ensure t
+  :hook (after-init . doom-modeline-mode))
 
 ;;; visual.el ends here

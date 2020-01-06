@@ -5,10 +5,7 @@
 
 ;;; Code:
 
-(load (get-fullpath "core/package.el"))
-(load (get-fullpath "core/base.el"))
-(load (get-fullpath "core/completion.el"))
-(load (get-fullpath "core/visual.el"))
+
 
 ;; Variables for optional languages mark true if used
 
@@ -23,5 +20,9 @@
 (let ((use-racket t))
   (if use-racket
       (load (get-fullpath "languages/racket.el"))))
+
+(let ((use-commonlsp t))
+  (if use-commonlsp
+      (load (get-fullpath "languages/commonlsp.el"))))
 
 ;;; loader.el ends here
