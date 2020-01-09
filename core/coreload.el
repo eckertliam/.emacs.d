@@ -5,10 +5,10 @@
 
 ;;; Code:
 
-(load "package.el")
-(load "base.el")
-(load "completion.el")
-(load "visual.el")
+(load (get-fullpath "package.el"))
+(load (get-fullpath "base.el"))
+(load (get-fullpath "completion.el"))
+(load (get-fullpath "visual.el"))
 
 
 ;;; coreload.el ends here

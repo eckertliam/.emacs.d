@@ -9,19 +9,23 @@
 
 ;; Variables for optional languages mark true if used
 
-(let ((use-rust t))
+(let ((use-core t))
+  (if use-core
+      (load (get-fullpath "core/coreload.el"))))
+
+(let ((use-rust nil))
   (if use-rust
       (load (get-fullpath "languages/rust.el"))))
 
-(let ((use-ocaml t))
+(let ((use-ocaml nil))
   (if use-ocaml
       (load (get-fullpath "languages/ocaml.el"))))
 
-(let ((use-racket t))
+(let ((use-racket nil))
   (if use-racket
       (load (get-fullpath "languages/racket.el"))))
 
-(let ((use-commonlsp t))
+(let ((use-commonlsp nil))
   (if use-commonlsp
       (load (get-fullpath "languages/commonlsp.el"))))
 
