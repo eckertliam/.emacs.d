@@ -32,4 +32,9 @@
 (let ((use-c-lang t))
   (if use-c-lang
       (load (get-fullpath "languages/c-lang.el"))))
+
+(let ((use-clojure t))
+  (if use-clojure
+      (load (get-fullpath "languages/clojure.el"))))
+
 ;;; loader.el ends here
