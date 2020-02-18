@@ -34,6 +34,6 @@
   kept-old-versions 2
   version-control t)
 
-(set-frame-font "Hack 9" nil t)
+(set-frame-font "Hack 10" nil t)
 
 ;;; base.el ends here

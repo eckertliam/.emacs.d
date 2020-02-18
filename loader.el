@@ -17,15 +17,15 @@
   (if use-rust
       (load (get-fullpath "languages/rust.el"))))
 
-(let ((use-ocaml nil))
+(let ((use-ocaml t))
   (if use-ocaml
       (load (get-fullpath "languages/ocaml.el"))))
 
-(let ((use-racket nil))
+(let ((use-racket t))
   (if use-racket
       (load (get-fullpath "languages/racket.el"))))
 
-(let ((use-commonlsp nil))
+(let ((use-commonlsp t))
   (if use-commonlsp
       (load (get-fullpath "languages/commonlsp.el"))))
 
@@ -40,5 +40,13 @@
 (let ((use-python t))
   (if use-python
       (load (get-fullpath "languages/python.el"))))
+
+(let ((use-haskell t))
+  (if use-haskell
+      (load (get-fullpath "languages/haskell.el"))))
+
+(let ((use-gol-lang t))
+  (if use-gol-lang
+      (load (get-fullpath "languages/go-lang.el"))))
 
 ;;; loader.el ends here
