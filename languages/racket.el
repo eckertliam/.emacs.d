@@ -6,6 +6,7 @@
 ;;; Code:
 
 (use-package racket-mode
+  :defer
   :ensure t)
 
 ;;; racket.el ends here

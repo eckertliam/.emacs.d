@@ -6,6 +6,7 @@
 ;;; Code:
 
 (use-package go-mode
+  :defer
   :ensure t)
 
 ;;; go-lang.el ends here

@@ -28,14 +28,24 @@
 (use-package company
   :ensure t
   :diminish company-mode
+  :hook (prog-mode . company-mode)
   :config
+  (setq company-tooltip-align-annotations t)
+  (setq company-minimum-prefix-length 1)
   (add-hook 'after-init-hook #'global-company-mode))
 
 (use-package flycheck
   :ensure t
   :diminish flycheck-mode
+  :hook (prog-mode . flycheck-mode)
   :config
   (add-hook 'after-init-hook #'global-flycheck-mode))
+
+(use-package lsp-mode
+  :commands lsp
+  :config (require 'lsp-clients))
+
+(use-package lsp-ui)
 
 (use-package smartparens
   :ensure t

@@ -7,6 +7,7 @@
 ;;; Code:
 
 (use-package cider
+  :defer
   :ensure t)
 
 

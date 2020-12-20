@@ -5,20 +5,25 @@
 
 ;;; Code:
 
+(use-package toml-mode)
+
 (use-package rust-mode
-  :ensure t)
+  :defer
+  :ensure t
+  :hook (rust-mode . lsp))
 
 (use-package cargo
   :ensure t
+  :defer
   :bind
   ("C-c C-c C-r" . cargo-process-run)
   ("C-c C-c C-b" . cargo-process-build)
   ("C-c C-c C-t" . cargo-process-test)
-  :config
-  (add-hook 'rust-mode-hook #'cargo-minor-mode))
+  :hook (rust-mode . cargo-minor-mode))
 
 (use-package racer
   :ensure t
+  :defer
   :config
   (add-hook 'rust-mode-hook #'racer-mode)
   (add-hook 'racer-mode-hook #'eldoc-mode)
@@ -26,6 +31,7 @@
 
 (use-package flycheck-rust
   :ensure t
+  :defer
   :config
   (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
 

@@ -6,6 +6,7 @@
 ;;; Code:
 
 (use-package haskell-mode
+  :defer
   :ensure t)
 
 ;;; haskell.el ends here

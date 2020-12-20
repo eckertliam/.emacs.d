@@ -6,10 +6,12 @@
 ;;; Code:
 
 (use-package tuareg
+  :defer
   :ensure t)
 
 (use-package merlin
   :ensure t
+  :defer
   :config
   (add-hook 'tuareg-mode-hook 'merlin-mode)
   (with-eval-after-load 'company
