@@ -45,7 +45,9 @@
   :commands lsp
   :config (require 'lsp-clients))
 
-(use-package lsp-ui)
+(use-package lsp-ui :commands lsp-ui-mode)
+
+(use-package helm-lsp :commands helm-lsp-workspace-symbol)
 
 (use-package smartparens
   :ensure t
