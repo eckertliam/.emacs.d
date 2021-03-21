@@ -16,6 +16,8 @@
 (size-indication-mode t)
 (global-auto-revert-mode t)
 
+(setq default-directory "/Users/liameckert/")
+
 (setq frame-title-format
       '((:eval (if (buffer-file-name)
            (abbreviate-file-name (buffer-file-name))
@@ -34,6 +36,6 @@
   kept-old-versions 2
   version-control t)
 
-(set-frame-font "Hack 10" nil t)
+(set-frame-font "Hack 12" nil t)
 
 ;;; base.el ends here

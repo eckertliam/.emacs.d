@@ -5,12 +5,10 @@
 
 ;;; Code:
 
-(use-package toml-mode)
-
 (use-package rust-mode
-  :defer
   :ensure t
-  :hook (rust-mode . lsp))
+  :bind
+  ("C-c <tab>" . rust-format-buffer))
 
 (use-package cargo
   :ensure t
@@ -19,20 +17,20 @@
   ("C-c C-c C-r" . cargo-process-run)
   ("C-c C-c C-b" . cargo-process-build)
   ("C-c C-c C-t" . cargo-process-test)
-  :hook (rust-mode . cargo-minor-mode))
+  :hook (cargo-minor-mode))
 
 (use-package racer
   :ensure t
   :defer
-  :config
-  (add-hook 'rust-mode-hook #'racer-mode)
-  (add-hook 'racer-mode-hook #'eldoc-mode)
-  (add-hook 'racer-mode-hook #'company-mode))
+  :hook
+  (rust-mode-hook . racer-mode)
+  (racer-mode-hook . eldoc-mode)
+  (racer-mode-hook . company-mode))
 
 (use-package flycheck-rust
   :ensure t
   :defer
-  :config
-  (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
+  :hook
+  (flycheck-mode-hook . flycheck-rust-setup))
 
 ;;; rust.el ends here

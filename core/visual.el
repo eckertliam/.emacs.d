@@ -8,7 +8,7 @@
 (use-package doom-themes
   :ensure t
   :config
-  (load-theme 'doom-nord t))
+  (load-theme 'doom-gruvbox t))
 
 (use-package all-the-icons
   :ensure t)
