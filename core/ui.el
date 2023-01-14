@@ -8,6 +8,7 @@
 (column-number-mode t)
 (size-indication-mode t)
 (global-auto-revert-mode t)
+(global-visual-line-mode t)
 
 ;; Make the beeps stop
 (setq ring-bell-function 'ignore)
@@ -39,7 +40,8 @@
   :config (golden-ratio-mode 1))
 
 (use-package doom-themes
-  :config (load-theme 'doom-gruvbox-light))
+  :config
+  (load-theme 'doom-one))
 
 (use-package mood-line
   :config (mood-line-mode))

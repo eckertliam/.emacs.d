@@ -22,3 +22,5 @@
 
 
 (load-directory "~/.emacs.d/core")
+(load-directory "~/.emacs.d/langs")
+(load-directory "~/.emacs.d/org/")
