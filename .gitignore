@@ -3,3 +3,6 @@ auto-save-list
 elpa
 straight/*
 transient/*
+.lsp-*
+ac-*
+racket-mode/*

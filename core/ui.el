@@ -41,7 +41,7 @@
 
 (use-package doom-themes
   :config
-  (load-theme 'doom-one))
+  (load-theme 'doom-challenger-deep))
 
 (use-package mood-line
   :config (mood-line-mode))
