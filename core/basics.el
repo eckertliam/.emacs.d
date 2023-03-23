@@ -1,3 +1,6 @@
+(setq make-backup-files nil)
+(setq auto-save-default nil)
+
 ;; be gone ugly tool bar!
 (menu-bar-mode -1)
 (toggle-scroll-bar -1)
@@ -10,13 +13,14 @@
 (global-auto-revert-mode t)
 (global-visual-line-mode t)
 
+
 ;; Make the beeps stop
 (setq ring-bell-function 'ignore)
 
 ;; replaces yes or no with y or n
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-;; stop ugly dumps on my init
+; stop ugly dumps on my init
 (setq custom-file (make-temp-file "dump"))
 
 ;; treat all themes as safe because if you are installing an Emacs package you should trust it
@@ -27,6 +31,7 @@
 
 ;; stop splash screen
 (setq inhibit-splash-screen t)
+
 
 ;; tab settings
 (setq-default indent-tabs-mode t)
@@ -39,9 +44,17 @@
 (use-package golden-ratio
   :config (golden-ratio-mode 1))
 
+;; basic git
+(use-package magit)
+
+;; theme
 (use-package doom-themes
+  :ensure t
   :config
-  (load-theme 'doom-challenger-deep))
+  (load-theme 'doom-nord t))
 
 (use-package mood-line
-  :config (mood-line-mode))
+  :config
+  (mood-line-mode))
+
+
