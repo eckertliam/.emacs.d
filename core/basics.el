@@ -51,10 +51,14 @@
 (use-package doom-themes
   :ensure t
   :config
-  (load-theme 'doom-nord t))
+  (load-theme 'doom-dracula))
 
-(use-package mood-line
-  :config
-  (mood-line-mode))
+(use-package all-the-icons
+  :ensure t)
+
+(use-package doom-modeline
+  :ensure t
+  :hook (after-init . doom-modeline-mode))
+
 
 
