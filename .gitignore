@@ -1,0 +1,9 @@
+elpa/
+tree-sitter/
+eln-cache/
+auto-save-list/
+*.elc
+\#*\#
+.\#*
+custom.el~
+.DS_Store
