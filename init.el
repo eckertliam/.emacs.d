@@ -251,6 +251,26 @@
   :ensure t
   :hook (prog-mode . hl-todo-mode))
 
+;;;; ---- Eldoc ----
+
+(use-package eldoc-box
+  :ensure t
+  :hook (eglot-managed-mode . eldoc-box-hover-at-point-mode))
+
+;;;; ---- Compile ----
+
+(use-package compile
+  :bind ("C-c c" . compile)
+  :config
+  (setq compilation-scroll-output t
+        compilation-ask-about-save nil))
+
+;; Auto-detect compile command per mode
+(add-hook 'rust-ts-mode-hook
+          (lambda () (setq-local compile-command "cargo build")))
+(add-hook 'c++-ts-mode-hook
+          (lambda () (setq-local compile-command "bazel build //...")))
+
 ;;;; ---- Diagnostics (flymake, built-in, used by eglot) ----
 
 (use-package flymake
