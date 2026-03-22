@@ -30,7 +30,9 @@ The config uses `(display-graphic-p)` to branch between terminal and GUI at load
 
 **Terminal path**: clipetty, xterm-mouse-mode, corfu-terminal, diff-hl-margin-mode, highlight-indent-guides with `'character` method.
 
-**GUI path**: font configuration (JetBrains Mono), ligature.el, spacious-padding, diff-hl fringe mode (default), highlight-indent-guides with `'bitmap` method.
+**GUI path**: font configuration (JetBrains Mono / Menlo fallback), ligature.el, spacious-padding, diff-hl fringe mode (default), highlight-indent-guides with `'bitmap` method.
+
+**Important**: `popper-mode` must be deferred until after startup (`emacs-startup` hook). Activating it during init causes its `display-buffer-alist` rules to intercept `*Messages*`/`*Warnings*` display, creating a window split that breaks the dashboard.
 
 ## Languages
 
