@@ -400,14 +400,18 @@
 ;;;; ---- GUI extras ----
 
 (when (display-graphic-p)
-  ;; Font — adjust family/size to taste
+  ;; Font — install JetBrains Mono / SF Pro for best results,
+  ;; falls back to Menlo / Helvetica Neue
   (set-face-attribute 'default nil
-                      :family "JetBrains Mono"
-                      :height 140
+                      :family (if (member "JetBrains Mono" (font-family-list))
+                                  "JetBrains Mono" "Menlo")
+                      :height 150
                       :weight 'normal)
   (set-face-attribute 'variable-pitch nil
-                      :family "SF Pro"
-                      :height 140))
+                      :family (if (member "SF Pro" (font-family-list))
+                                  "SF Pro" "Helvetica Neue")
+                      :height 1.0)
+  (setq-default line-spacing 2))
 
 (use-package ligature
   :if (display-graphic-p)
