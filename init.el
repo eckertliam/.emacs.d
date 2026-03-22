@@ -397,6 +397,15 @@
 (add-hook 'c++-ts-mode-hook
           (lambda () (setq-local compile-command "bazel build //...")))
 
+;;;; ---- AI (hob) ----
+
+(use-package hob
+  :straight (:host github :repo "eckertliam/hob"
+             :files ("lisp/*.el")
+             :pre-build ("cargo" "build" "--release" "--manifest-path" "agent/Cargo.toml"))
+  :config
+  (setq hob-model "claude-opus-4-6"))
+
 ;;;; ---- GUI extras ----
 
 (when (display-graphic-p)
