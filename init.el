@@ -34,12 +34,19 @@
       scroll-conservatively 101)
 
 (global-auto-revert-mode 1)
+(setq auto-revert-interval 1)
+(setq auto-revert-use-notify t)
 (savehist-mode 1)
 (recentf-mode 1)
 (save-place-mode 1)
 (electric-pair-mode 1)
 (column-number-mode 1)
 (global-display-line-numbers-mode 1)
+
+;; Mouse support in terminal
+(xterm-mouse-mode 1)
+(global-set-key [mouse-4] (lambda () (interactive) (scroll-down 3)))
+(global-set-key [mouse-5] (lambda () (interactive) (scroll-up 3)))
 
 ;; Restore GC after startup
 (add-hook 'emacs-startup-hook
@@ -150,6 +157,12 @@
   (corfu-preselect 'prompt)
   :init (global-corfu-mode))
 
+(use-package corfu-terminal
+  :ensure t
+  :unless (display-graphic-p)
+  :after corfu
+  :config (corfu-terminal-mode 1))
+
 (use-package cape
   :ensure t
   :init
@@ -253,9 +266,10 @@
 
 ;;;; ---- Eldoc ----
 
-(use-package eldoc-box
-  :ensure t
-  :hook (eglot-managed-mode . eldoc-box-hover-at-point-mode))
+(use-package eldoc
+  :config
+  (setq eldoc-echo-area-use-multiline-p t
+        eldoc-echo-area-display-truncation-message nil))
 
 ;;;; ---- Compile ----
 
