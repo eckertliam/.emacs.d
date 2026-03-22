@@ -233,7 +233,10 @@
 (use-package diff-hl
   :ensure t
   :hook ((after-init . global-diff-hl-mode)
-         (magit-post-refresh . diff-hl-magit-post-refresh)))
+         (magit-post-refresh . diff-hl-magit-post-refresh))
+  :config
+  (diff-hl-margin-mode 1)
+  (diff-hl-flydiff-mode 1))
 
 ;;;; ---- Navigation ----
 
@@ -249,6 +252,26 @@
 
 ;;;; ---- Visual extras ----
 
+(use-package pulsar
+  :ensure t
+  :hook (after-init . pulsar-global-mode)
+  :config
+  (setq pulsar-pulse t
+        pulsar-delay 0.05
+        pulsar-iterations 10))
+
+(use-package lin
+  :ensure t
+  :hook (after-init . lin-global-mode)
+  :config
+  (setq lin-mode-hooks
+        '(dired-mode-hook
+          magit-status-mode-hook
+          magit-log-mode-hook
+          occur-mode-hook
+          org-agenda-mode-hook
+          tabulated-list-mode-hook)))
+
 (use-package rainbow-delimiters
   :ensure t
   :hook (prog-mode . rainbow-delimiters-mode))
@@ -263,6 +286,33 @@
 (use-package hl-todo
   :ensure t
   :hook (prog-mode . hl-todo-mode))
+
+;;;; ---- Popups ----
+
+(use-package popper
+  :ensure t
+  :bind (("C-`"   . popper-toggle)
+         ("M-`"   . popper-cycle)
+         ("C-M-`" . popper-toggle-type))
+  :init
+  (setq popper-reference-buffers
+        '("\\*Messages\\*"
+          "\\*Warnings\\*"
+          "Output\\*$"
+          "\\*Async Shell Command\\*"
+          help-mode
+          compilation-mode
+          flymake-diagnostics-buffer-mode))
+  (popper-mode 1))
+
+;;;; ---- Writing ----
+
+(use-package olivetti
+  :ensure t
+  :hook ((markdown-mode . olivetti-mode)
+         (org-mode . olivetti-mode))
+  :config
+  (setq olivetti-body-width 80))
 
 ;;;; ---- Eldoc ----
 
