@@ -363,7 +363,7 @@
           help-mode
           compilation-mode
           flymake-diagnostics-buffer-mode))
-  (popper-mode 1))
+  :hook (emacs-startup . popper-mode))
 
 ;;;; ---- Writing ----
 
