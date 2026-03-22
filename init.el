@@ -1,15 +1,23 @@
 ;; -*- lexical-binding: t; -*-
 
-;;;; ---- Package setup ----
+;;;; ---- Package setup (straight.el) ----
 
-(require 'package)
-(setq package-archives
-      '(("melpa" . "https://melpa.org/packages/")
-        ("gnu"   . "https://elpa.gnu.org/packages/")
-        ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
-(package-initialize)
-(unless package-archive-contents
-  (package-refresh-contents))
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el"
+                         (or (bound-and-true-p straight-base-dir) user-emacs-directory)))
+      (bootstrap-version 7))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+
+(straight-use-package 'use-package)
+(setq straight-use-package-by-default t)
 
 ;;;; ---- General settings ----
 
@@ -18,7 +26,7 @@
 
 ;; Clipboard in terminal
 (use-package clipetty
-  :ensure t
+
   :hook (after-init . global-clipetty-mode))
 
 ;; Basics
@@ -50,7 +58,7 @@
 
 ;; Smart GC — only collect when idle
 (use-package gcmh
-  :ensure t
+
   :hook (after-init . gcmh-mode)
   :config
   (setq gcmh-idle-delay 5
@@ -59,7 +67,7 @@
 ;;;; ---- Theme ----
 
 (use-package doom-themes
-  :ensure t
+
   :config
   (setq doom-themes-enable-bold t
         doom-themes-enable-italic t)
@@ -71,30 +79,30 @@
   :ensure t)
 
 (use-package nerd-icons-completion
-  :ensure t
+
   :after marginalia
   :config
   (nerd-icons-completion-mode)
   (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
 
 (use-package nerd-icons-corfu
-  :ensure t
+
   :after corfu
   :config
   (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
 
 (use-package nerd-icons-dired
-  :ensure t
+
   :hook (dired-mode . nerd-icons-dired-mode))
 
 (use-package nerd-icons-ibuffer
-  :ensure t
+
   :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
 
 ;;;; ---- Modeline ----
 
 (use-package doom-modeline
-  :ensure t
+
   :hook (after-init . doom-modeline-mode)
   :config
   (setq doom-modeline-icon t
@@ -108,7 +116,7 @@
 ;;;; ---- Dashboard ----
 
 (use-package dashboard
-  :ensure t
+
   :config
   (setq dashboard-banner-logo-title "Welcome back, Liam"
         dashboard-startup-banner (concat user-emacs-directory "banner.txt")
@@ -122,7 +130,7 @@
 ;;;; ---- Which-key ----
 
 (use-package which-key
-  :ensure t
+
   :hook (after-init . which-key-mode)
   :config
   (setq which-key-idle-delay 0.5))
@@ -130,21 +138,21 @@
 ;;;; ---- Minibuffer completion (vertico stack) ----
 
 (use-package vertico
-  :ensure t
+
   :init (vertico-mode))
 
 (use-package orderless
-  :ensure t
+
   :custom
   (completion-styles '(orderless basic))
   (completion-category-overrides '((file (styles partial-completion)))))
 
 (use-package marginalia
-  :ensure t
+
   :init (marginalia-mode))
 
 (use-package consult
-  :ensure t
+
   :bind (("C-x b"   . consult-buffer)
          ("C-x r b" . consult-bookmark)
          ("M-g g"   . consult-goto-line)
@@ -154,7 +162,7 @@
          ("M-s f"   . consult-find)))
 
 (use-package embark
-  :ensure t
+
   :bind (("C-."   . embark-act)
          ("C-;"   . embark-dwim)
          ("C-h B" . embark-bindings))
@@ -162,18 +170,18 @@
   (setq prefix-help-command #'embark-prefix-help-command))
 
 (use-package embark-consult
-  :ensure t
+
   :hook (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package wgrep
-  :ensure t
+
   :config
   (setq wgrep-auto-save-buffer t))
 
 ;;;; ---- In-buffer completion (corfu) ----
 
 (use-package corfu
-  :ensure t
+
   :custom
   (corfu-auto t)
   (corfu-auto-delay 0.2)
@@ -183,13 +191,13 @@
   :init (global-corfu-mode))
 
 (use-package corfu-terminal
-  :ensure t
+
   :unless (display-graphic-p)
   :after corfu
   :config (corfu-terminal-mode 1))
 
 (use-package cape
-  :ensure t
+
   :init
   (add-to-list 'completion-at-point-functions #'cape-dabbrev)
   (add-to-list 'completion-at-point-functions #'cape-file))
@@ -197,6 +205,7 @@
 ;;;; ---- LSP (eglot) ----
 
 (use-package eglot
+  :straight nil
   :hook ((rust-ts-mode . eglot-ensure)
          (c++-ts-mode  . eglot-ensure)
          (c-ts-mode    . eglot-ensure))
@@ -238,7 +247,7 @@
   :ensure t)
 
 (use-package cargo
-  :ensure t
+
   :hook (rust-ts-mode . cargo-minor-mode))
 
 ;;;; ---- C++ ----
@@ -252,11 +261,11 @@
 ;;;; ---- Git ----
 
 (use-package magit
-  :ensure t
+
   :bind ("C-x g" . magit-status))
 
 (use-package diff-hl
-  :ensure t
+
   :hook ((after-init . global-diff-hl-mode)
          (magit-post-refresh . diff-hl-magit-post-refresh))
   :config
@@ -266,7 +275,7 @@
 ;;;; ---- File management ----
 
 (use-package dirvish
-  :ensure t
+
   :init (dirvish-override-dired-mode)
   :bind (("C-x d" . dirvish)
          :map dirvish-mode-map
@@ -279,7 +288,7 @@
 ;;;; ---- Help ----
 
 (use-package helpful
-  :ensure t
+
   :bind (("C-h f" . helpful-callable)
          ("C-h v" . helpful-variable)
          ("C-h k" . helpful-key)
@@ -288,19 +297,19 @@
 ;;;; ---- Navigation ----
 
 (use-package avy
-  :ensure t
+
   :bind ("M-j" . avy-goto-char-timer))
 
 ;;;; ---- Undo ----
 
 (use-package vundo
-  :ensure t
+
   :bind ("C-x u" . vundo))
 
 ;;;; ---- Visual extras ----
 
 (use-package pulsar
-  :ensure t
+
   :hook (after-init . pulsar-global-mode)
   :config
   (setq pulsar-pulse t
@@ -308,7 +317,7 @@
         pulsar-iterations 10))
 
 (use-package lin
-  :ensure t
+
   :hook (after-init . lin-global-mode)
   :config
   (setq lin-mode-hooks
@@ -320,24 +329,24 @@
           tabulated-list-mode-hook)))
 
 (use-package rainbow-delimiters
-  :ensure t
+
   :hook (prog-mode . rainbow-delimiters-mode))
 
 (use-package highlight-indent-guides
-  :ensure t
+
   :hook (prog-mode . highlight-indent-guides-mode)
   :config
   (setq highlight-indent-guides-method 'character
         highlight-indent-guides-responsive 'top))
 
 (use-package hl-todo
-  :ensure t
+
   :hook (prog-mode . hl-todo-mode))
 
 ;;;; ---- Popups ----
 
 (use-package popper
-  :ensure t
+
   :bind (("C-`"   . popper-toggle)
          ("M-`"   . popper-cycle)
          ("C-M-`" . popper-toggle-type))
@@ -355,7 +364,7 @@
 ;;;; ---- Writing ----
 
 (use-package olivetti
-  :ensure t
+
   :hook ((markdown-mode . olivetti-mode)
          (org-mode . olivetti-mode))
   :config
@@ -364,6 +373,7 @@
 ;;;; ---- Eldoc ----
 
 (use-package eldoc
+  :straight nil
   :config
   (setq eldoc-echo-area-use-multiline-p t
         eldoc-echo-area-display-truncation-message nil))
@@ -371,6 +381,7 @@
 ;;;; ---- Compile ----
 
 (use-package compile
+  :straight nil
   :bind ("C-c c" . compile)
   :config
   (setq compilation-scroll-output t
@@ -385,19 +396,10 @@
 ;;;; ---- Diagnostics (flymake, built-in, used by eglot) ----
 
 (use-package flymake
+  :straight nil
   :hook ((rust-ts-mode c++-ts-mode c-ts-mode) . flymake-mode)
   :bind (:map flymake-mode-map
          ("M-n" . flymake-goto-next-error)
          ("M-p" . flymake-goto-prev-error)))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages nil))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+(custom-set-variables)
+(custom-set-faces)

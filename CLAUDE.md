@@ -12,7 +12,7 @@ Personal Emacs configuration for terminal-only use (no GUI frames). Uses Ghostty
 - **`init.el`** — all configuration, organized in labeled sections (`;;;; ---- Section ----`)
 - **`banner.txt`** — ASCII art for the dashboard
 
-All packages are installed via `package.el` from MELPA/GNU/NonGNU ELPA. No straight.el or Borg. `use-package` is used throughout for package configuration.
+All packages are installed via `straight.el` (bootstrapped in `init.el`). `use-package` is used throughout with `straight-use-package-by-default t`, so no `:ensure t` is needed. Built-in packages use `:straight nil`.
 
 ## Key stacks
 
