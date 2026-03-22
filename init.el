@@ -22,11 +22,13 @@
 ;;;; ---- General settings ----
 
 ;; Ghostty terminal support
-(add-to-list 'term-file-aliases '("ghostty" . "xterm-256color"))
+(unless (display-graphic-p)
+  (add-to-list 'term-file-aliases '("ghostty" . "xterm-256color")))
 
 ;; Clipboard in terminal
 (use-package clipetty
 
+  :unless (display-graphic-p)
   :hook (after-init . global-clipetty-mode))
 
 ;; Basics
@@ -52,9 +54,10 @@
 (global-display-line-numbers-mode 1)
 
 ;; Mouse support in terminal
-(xterm-mouse-mode 1)
-(global-set-key [mouse-4] (lambda () (interactive) (scroll-down 3)))
-(global-set-key [mouse-5] (lambda () (interactive) (scroll-up 3)))
+(unless (display-graphic-p)
+  (xterm-mouse-mode 1)
+  (global-set-key [mouse-4] (lambda () (interactive) (scroll-down 3)))
+  (global-set-key [mouse-5] (lambda () (interactive) (scroll-up 3))))
 
 ;; Smart GC — only collect when idle
 (use-package gcmh
@@ -269,7 +272,8 @@
   :hook ((after-init . global-diff-hl-mode)
          (magit-post-refresh . diff-hl-magit-post-refresh))
   :config
-  (diff-hl-margin-mode 1)
+  (unless (display-graphic-p)
+    (diff-hl-margin-mode 1))
   (diff-hl-flydiff-mode 1))
 
 ;;;; ---- File management ----
@@ -336,7 +340,7 @@
 
   :hook (prog-mode . highlight-indent-guides-mode)
   :config
-  (setq highlight-indent-guides-method 'character
+  (setq highlight-indent-guides-method (if (display-graphic-p) 'bitmap 'character)
         highlight-indent-guides-responsive 'top))
 
 (use-package hl-todo
@@ -392,6 +396,44 @@
           (lambda () (setq-local compile-command "cargo build")))
 (add-hook 'c++-ts-mode-hook
           (lambda () (setq-local compile-command "bazel build //...")))
+
+;;;; ---- GUI extras ----
+
+(when (display-graphic-p)
+  ;; Font — adjust family/size to taste
+  (set-face-attribute 'default nil
+                      :family "JetBrains Mono"
+                      :height 140
+                      :weight 'normal)
+  (set-face-attribute 'variable-pitch nil
+                      :family "SF Pro"
+                      :height 140))
+
+(use-package ligature
+  :if (display-graphic-p)
+
+  :config
+  (ligature-set-ligatures 'prog-mode
+                          '("==" "!=" ">=" "<=" "&&" "||"
+                            "->" "=>" "::" "++" "--"
+                            "<<" ">>" "/*" "*/" "//"
+                            "#{" "#(" "#_" "#!" "#="
+                            "<|" "|>" "||=" "&&="))
+  (global-ligature-mode t))
+
+(use-package spacious-padding
+  :if (display-graphic-p)
+
+  :hook (after-init . spacious-padding-mode)
+  :config
+  (setq spacious-padding-widths
+        '(:internal-border-width 15
+          :header-line-width 4
+          :mode-line-width 6
+          :tab-width 4
+          :right-divider-width 20
+          :scroll-bar-width 8
+          :fringe-width 8)))
 
 ;;;; ---- Diagnostics (flymake, built-in, used by eglot) ----
 
