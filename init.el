@@ -48,9 +48,13 @@
 (global-set-key [mouse-4] (lambda () (interactive) (scroll-down 3)))
 (global-set-key [mouse-5] (lambda () (interactive) (scroll-up 3)))
 
-;; Restore GC after startup
-(add-hook 'emacs-startup-hook
-          (lambda () (setq gc-cons-threshold (* 2 1000 1000))))
+;; Smart GC — only collect when idle
+(use-package gcmh
+  :ensure t
+  :hook (after-init . gcmh-mode)
+  :config
+  (setq gcmh-idle-delay 5
+        gcmh-high-cons-threshold (* 16 1024 1024)))
 
 ;;;; ---- Theme ----
 
@@ -82,6 +86,10 @@
 (use-package nerd-icons-dired
   :ensure t
   :hook (dired-mode . nerd-icons-dired-mode))
+
+(use-package nerd-icons-ibuffer
+  :ensure t
+  :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
 
 ;;;; ---- Modeline ----
 
@@ -144,6 +152,23 @@
          ("M-s r"   . consult-ripgrep)
          ("M-s l"   . consult-line)
          ("M-s f"   . consult-find)))
+
+(use-package embark
+  :ensure t
+  :bind (("C-."   . embark-act)
+         ("C-;"   . embark-dwim)
+         ("C-h B" . embark-bindings))
+  :config
+  (setq prefix-help-command #'embark-prefix-help-command))
+
+(use-package embark-consult
+  :ensure t
+  :hook (embark-collect-mode . consult-preview-at-point-mode))
+
+(use-package wgrep
+  :ensure t
+  :config
+  (setq wgrep-auto-save-buffer t))
 
 ;;;; ---- In-buffer completion (corfu) ----
 
@@ -237,6 +262,28 @@
   :config
   (diff-hl-margin-mode 1)
   (diff-hl-flydiff-mode 1))
+
+;;;; ---- File management ----
+
+(use-package dirvish
+  :ensure t
+  :init (dirvish-override-dired-mode)
+  :bind (("C-x d" . dirvish)
+         :map dirvish-mode-map
+         ("TAB" . dirvish-subtree-toggle)
+         ("q"   . dirvish-quit))
+  :config
+  (setq dirvish-attributes '(nerd-icons file-size collapse subtree-state)
+        dirvish-default-layout '(0 0.4 0.6)))
+
+;;;; ---- Help ----
+
+(use-package helpful
+  :ensure t
+  :bind (("C-h f" . helpful-callable)
+         ("C-h v" . helpful-variable)
+         ("C-h k" . helpful-key)
+         ("C-h x" . helpful-command)))
 
 ;;;; ---- Navigation ----
 
