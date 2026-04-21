@@ -194,8 +194,7 @@
   :init (global-corfu-mode))
 
 (use-package corfu-terminal
-
-  :unless (display-graphic-p)
+  :if (and (not (display-graphic-p)) (version< emacs-version "31"))
   :after corfu
   :config (corfu-terminal-mode 1))
 
