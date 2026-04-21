@@ -260,6 +260,11 @@
 (add-hook 'c-ts-mode-hook
           (lambda () (setq c-ts-mode-indent-offset 4)))
 
+;;;; ---- Compiler explorer (rmsbolt) ----
+
+(use-package rmsbolt
+  :commands (rmsbolt rmsbolt-starter rmsbolt-compile))
+
 ;;;; ---- Git ----
 
 (use-package magit
