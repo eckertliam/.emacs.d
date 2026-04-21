@@ -396,6 +396,15 @@
 (add-hook 'c++-ts-mode-hook
           (lambda () (setq-local compile-command "bazel build //...")))
 
+;;;; ---- Terminal (eat) ----
+
+(use-package eat
+  :bind ("C-c t" . eat)
+  :hook ((eshell-load . eat-eshell-mode)
+         (eshell-load . eat-eshell-visual-command-mode))
+  :config
+  (setq eat-term-name "xterm-256color"))
+
 ;;;; ---- AI (hob) ----
 
 (use-package hob
