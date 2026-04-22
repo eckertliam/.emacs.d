@@ -116,20 +116,6 @@
         doom-modeline-vcs-max-length 20
         doom-modeline-height 1))
 
-;;;; ---- Dashboard ----
-
-(use-package dashboard
-
-  :config
-  (setq dashboard-banner-logo-title "Welcome back, Liam"
-        dashboard-startup-banner (concat user-emacs-directory "banner.txt")
-        dashboard-center-content t
-        dashboard-vertically-center-content t
-        dashboard-items nil
-        dashboard-set-init-info t
-        dashboard-set-navigator nil)
-  (dashboard-setup-startup-hook))
-
 ;;;; ---- Which-key ----
 
 (use-package which-key
@@ -410,30 +396,27 @@
   :config
   (setq eat-term-name "xterm-256color"))
 
-;;;; ---- AI (hob) ----
-
-(use-package hob
-  :straight (:host github :repo "eckertliam/hob"
-             :files ("lisp/*.el")
-             :pre-build ("cargo" "build" "--release" "--manifest-path" "agent/Cargo.toml"))
-  :config
-  (setq hob-model "claude-opus-4-6"))
-
 ;;;; ---- GUI extras ----
 
 (when (display-graphic-p)
-  ;; Font — install JetBrains Mono / SF Pro for best results,
-  ;; falls back to Menlo / Helvetica Neue
-  (set-face-attribute 'default nil
-                      :family (if (member "JetBrains Mono" (font-family-list))
-                                  "JetBrains Mono" "Menlo")
-                      :height 150
-                      :weight 'normal)
-  (set-face-attribute 'variable-pitch nil
-                      :family (if (member "SF Pro" (font-family-list))
-                                  "SF Pro" "Helvetica Neue")
-                      :height 1.0)
-  (setq-default line-spacing 2))
+  (cl-flet ((first-available (families)
+              (seq-find (lambda (f) (member f (font-family-list))) families)))
+    (set-face-attribute 'default nil
+                        :family (first-available
+                                 '("JetBrainsMono Nerd Font Mono"
+                                   "JetBrains Mono"
+                                   "Menlo"))
+                        :height (if (eq system-type 'gnu/linux) 180 150)
+                        :weight 'normal)
+    (set-face-attribute 'variable-pitch nil
+                        :family (first-available
+                                 '("SF Pro"
+                                   "Helvetica Neue"
+                                   "Adwaita Sans"
+                                   "Noto Sans"))
+                        :height 1.0))
+  (setq-default cursor-type 'box
+                line-spacing 2))
 
 (use-package ligature
   :if (display-graphic-p)
