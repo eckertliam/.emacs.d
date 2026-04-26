@@ -392,9 +392,16 @@
 (use-package eat
   :bind ("C-c t" . eat)
   :hook ((eshell-load . eat-eshell-mode)
-         (eshell-load . eat-eshell-visual-command-mode))
+         (eshell-load . eat-eshell-visual-command-mode)
+         (eat-mode . (lambda ()
+                       (display-line-numbers-mode -1)
+                       (when (bound-and-true-p hl-line-mode)
+                         (hl-line-mode -1)))))
   :config
-  (setq eat-term-name "xterm-256color"))
+  (setq eat-term-name "xterm-256color"
+        eat-kill-buffer-on-exit t
+        eat-enable-yank-to-terminal t
+        eat-term-scrollback-size (* 1024 1024)))
 
 ;;;; ---- GUI extras ----
 
