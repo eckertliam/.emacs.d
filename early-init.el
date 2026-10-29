@@ -13,9 +13,6 @@
       tool-bar-mode nil
       scroll-bar-mode nil)
 
-;; Same font as Ghostty; set here so the first frame opens with it.
-(push '(font . "JetBrainsMono Nerd Font-13") default-frame-alist)
-
 (setq frame-inhibit-implied-resize t
       inhibit-startup-screen t
       initial-scratch-message nil)

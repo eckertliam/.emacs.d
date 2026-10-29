@@ -108,6 +108,24 @@
 (use-package ws-butler
   :hook (prog-mode . ws-butler-mode))
 
+;;;; Font
+
+(defvar my/font-families '("JetBrainsMono Nerd Font" "JetBrains Mono")
+  "Preferred default fonts; the first one installed wins.")
+(defvar my/font-height 130)
+
+(defun my/apply-font (&optional _frame)
+  "Use the first installed font in `my/font-families', if any."
+  (when (display-graphic-p)
+    (when-let* ((family (seq-find (lambda (f) (find-font (font-spec :family f)))
+                                  my/font-families)))
+      (set-face-attribute 'default nil :family family :height my/font-height))))
+
+;; A daemon has no display at startup, so apply to its first GUI frame instead.
+(if (daemonp)
+    (add-hook 'server-after-make-frame-hook #'my/apply-font)
+  (my/apply-font))
+
 ;;;; Editing UI
 
 (column-number-mode 1)
@@ -167,8 +185,8 @@
   :bind (("C-x b"   . consult-buffer)
          ("C-x p b" . consult-project-buffer)
          ("C-x p f" . my/project-find-file)
-         ("C-x p g" . consult-ripgrep)
-         ("M-s r"   . consult-ripgrep)
+         ("C-x p g" . my/search-project)
+         ("M-s r"   . my/search-project)
          ("M-s l"   . consult-line)
          ("M-g i"   . consult-imenu)
          ("M-g f"   . consult-flymake)
@@ -177,9 +195,15 @@
   :init
   ;; Show definitions and references (M-., M-?) in a previewing picker.
   (setq xref-show-xrefs-function #'consult-xref
-        xref-show-definitions-function #'consult-xref
-        xref-search-program 'ripgrep)
+        xref-show-definitions-function #'consult-xref)
+  (when (executable-find "rg")
+    (setq xref-search-program 'ripgrep))
   :config
+  (defun my/search-project ()
+    "Live project search: ripgrep if installed, else git grep."
+    (interactive)
+    (call-interactively (if (executable-find "rg") #'consult-ripgrep #'consult-git-grep)))
+
   ;; Previewing files means opening them, so wait for a pause in typing.
   (consult-customize consult-ripgrep consult-xref consult-recent-file
                      :preview-key '(:debounce 0.3 any))
@@ -296,7 +320,7 @@
   :hook ((dired-mode . dired-hide-details-mode) ; ( toggles details
          (dired-mode . (lambda () (setq truncate-lines t))))
   :config
-  ;; Emacs's own ls: macOS ls can't put directories first.
+  ;; Emacs's own ls: identical on every OS (macOS ls can't list dirs first).
   (require 'ls-lisp)
   (setq ls-lisp-use-insert-directory-program nil
         ls-lisp-dirs-first t
@@ -324,10 +348,14 @@ Dired leaves the arrow visible; the nerd-icons link icon already says it."
                              'invisible 'dired-hide-details-link))))))
 (add-hook 'dired-after-readin-hook #'my/dired-hide-symlink-arrows)
 
+;; Icons need a Nerd Font: use the Mono variant of the default font when it is
+;; installed, otherwise nerd-icons' own (M-x nerd-icons-install-fonts).
 (use-package nerd-icons
   :defer t
   :config
-  (setq nerd-icons-font-family "JetBrainsMono Nerd Font Mono"))
+  (when-let* ((family (seq-find (lambda (f) (find-font (font-spec :family f)))
+                                '("JetBrainsMono Nerd Font Mono"))))
+    (setq nerd-icons-font-family family)))
 
 (use-package nerd-icons-dired
   :hook (dired-mode . nerd-icons-dired-mode))
@@ -416,7 +444,7 @@ Dired leaves the arrow visible; the nerd-icons link icon already says it."
              '("/\\(?:\\(?:COMMIT\\|NOTES\\|TAG\\)_EDIT\\|MERGE_\\)MSG\\'"
                . my/git-commit-setup))
 
-;; Structural diffs via the difft binary (brew install difftastic).
+;; Structural diffs; needs the difft binary (difftastic) on PATH.
 ;; In magit's diff menu (d): M-d diff, M-c show commit.
 (use-package difftastic
   :defer t)
@@ -453,9 +481,14 @@ has a .clang-format, so other people's code isn't reformatted."
             (locate-dominating-file default-directory ".clang-format"))
     (add-hook 'before-save-hook #'eglot-format-buffer nil t)))
 
+(defun my/eglot-ensure-if-installed ()
+  "Start eglot only when this mode's language server is on PATH."
+  (when (executable-find (if (derived-mode-p 'rust-ts-mode) "rust-analyzer" "clangd"))
+    (eglot-ensure)))
+
 (use-package eglot
   :ensure nil
-  :hook (((rust-ts-mode c-ts-mode c++-ts-mode) . eglot-ensure)
+  :hook (((rust-ts-mode c-ts-mode c++-ts-mode) . my/eglot-ensure-if-installed)
          (eglot-managed-mode . my/eglot-format-on-save))
   :bind (:map eglot-mode-map
          ("C-c r" . eglot-rename)
