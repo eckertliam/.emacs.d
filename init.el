@@ -118,7 +118,7 @@
 (setq show-paren-context-when-offscreen 'overlay)
 
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
-(setq display-line-numbers-width 3)
+(setq-default display-line-numbers-width 3)   ; buffer-local, so set the default
 
 (setq scroll-conservatively 101
       scroll-margin 2
