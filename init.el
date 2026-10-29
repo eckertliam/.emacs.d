@@ -433,10 +433,13 @@ Dired leaves the arrow visible; the nerd-icons link icon already says it."
 
 ;; Use tree-sitter modes, building grammars on first use (needs cc and git).
 (setopt treesit-enabled-modes '(rust-ts-mode c-ts-mode c++-ts-mode
-                                c-or-c++-ts-mode toml-ts-mode
-                                markdown-ts-mode)
+                                c-or-c++-ts-mode toml-ts-mode)
         treesit-auto-install-grammar 'always
         treesit-font-lock-level 4)
+
+;; Emacs 31.1 ships markdown-ts-mode but neither autoloads it nor maps .md.
+(autoload 'markdown-ts-mode "markdown-ts-mode" nil t)
+(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-ts-mode))
 
 (defun my/eglot-format-on-save ()
   "Format with the language server on save.
