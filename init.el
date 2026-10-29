@@ -30,9 +30,10 @@
 
 ;;;; Server
 
-;; Lets emacsclient (and tools) talk to this Emacs.
+;; Lets emacsclient (and tools) talk to this Emacs.  A daemon starts its
+;; own server after init.
 (require 'server)
-(unless (server-running-p)
+(unless (or (daemonp) (server-running-p))
   (server-start))
 
 ;;;; Behavior
@@ -70,6 +71,7 @@
       desktop-path (list user-emacs-directory)
       desktop-save t                            ; save without asking
       desktop-load-locked-desktop 'check-pid    ; ignore stale locks after a crash
+      desktop-restore-frames nil                ; a daemon has no frames at startup
       desktop-restore-eager 8)                  ; restore the rest lazily
 (desktop-save-mode 1)
 
@@ -108,24 +110,6 @@
 (use-package ws-butler
   :hook (prog-mode . ws-butler-mode))
 
-;;;; Font
-
-(defvar my/font-families '("JetBrainsMono Nerd Font" "JetBrains Mono")
-  "Preferred default fonts; the first one installed wins.")
-(defvar my/font-height 130)
-
-(defun my/apply-font (&optional _frame)
-  "Use the first installed font in `my/font-families', if any."
-  (when (display-graphic-p)
-    (when-let* ((family (seq-find (lambda (f) (find-font (font-spec :family f)))
-                                  my/font-families)))
-      (set-face-attribute 'default nil :family family :height my/font-height))))
-
-;; A daemon has no display at startup, so apply to its first GUI frame instead.
-(if (daemonp)
-    (add-hook 'server-after-make-frame-hook #'my/apply-font)
-  (my/apply-font))
-
 ;;;; Editing UI
 
 (column-number-mode 1)
@@ -139,8 +123,6 @@
 (setq scroll-conservatively 101
       scroll-margin 2
       mouse-wheel-progressive-speed nil)
-(when (fboundp 'pixel-scroll-precision-mode)
-  (pixel-scroll-precision-mode 1))
 
 ;;;; Minibuffer, completion and search
 
@@ -262,11 +244,6 @@
   :config
   (solaire-global-mode 1))
 
-;; Breathing room around windows and the modeline.
-(use-package spacious-padding
-  :config
-  (spacious-padding-mode 1))
-
 (use-package mood-line
   :config
   (setq mood-line-glyph-alist mood-line-glyphs-unicode)
@@ -291,8 +268,7 @@
 
 ;;;; Key hints
 
-;; which-key is built in since Emacs 30; posframe shows it as a floating
-;; box instead of a window that shoves the layout around.
+;; which-key is built in since Emacs 30; hints appear in a bottom window.
 (use-package which-key
   :ensure nil
   :config
@@ -304,14 +280,6 @@
         which-key-sort-order #'which-key-key-order-alpha
         which-key-sort-uppercase-first nil)
   (which-key-mode 1))
-
-(use-package which-key-posframe
-  :after which-key
-  :config
-  (setq which-key-posframe-poshandler #'posframe-poshandler-frame-bottom-center
-        which-key-posframe-border-width 2
-        which-key-posframe-parameters '((left-fringe . 8) (right-fringe . 8)))
-  (which-key-posframe-mode 1))
 
 ;;;; Dired
 
@@ -334,7 +302,10 @@
         dired-dwim-target t             ; copy/move to the other dired window
         dired-recursive-copies 'always
         dired-recursive-deletes 'top
-        delete-by-moving-to-trash t))
+        delete-by-moving-to-trash t)
+  ;; Terminal builds on macOS would otherwise use the freedesktop trash.
+  (when (eq system-type 'darwin)
+    (setq trash-directory "~/.Trash")))
 
 (defun my/dired-hide-symlink-arrows ()
   "Hide \" -> \" along with the symlink target it points at.
@@ -348,15 +319,7 @@ Dired leaves the arrow visible; the nerd-icons link icon already says it."
                              'invisible 'dired-hide-details-link))))))
 (add-hook 'dired-after-readin-hook #'my/dired-hide-symlink-arrows)
 
-;; Icons need a Nerd Font: use the Mono variant of the default font when it is
-;; installed, otherwise nerd-icons' own (M-x nerd-icons-install-fonts).
-(use-package nerd-icons
-  :defer t
-  :config
-  (when-let* ((family (seq-find (lambda (f) (find-font (font-spec :family f)))
-                                '("JetBrainsMono Nerd Font Mono"))))
-    (setq nerd-icons-font-family family)))
-
+;; Icons are drawn by the terminal's font, so it must be a Nerd Font.
 (use-package nerd-icons-dired
   :hook (dired-mode . nerd-icons-dired-mode))
 
@@ -454,7 +417,8 @@ Dired leaves the arrow visible; the nerd-icons link icon already says it."
   :config
   (difftastic-bindings-mode 1))
 
-;; Changed-line markers in the fringe of file buffers, kept in sync with magit.
+;; Changed-line markers in the left margin of file buffers (terminals have no
+;; fringe), kept in sync with magit.
 (use-package diff-hl
   :demand t
   :hook ((magit-pre-refresh . diff-hl-magit-pre-refresh)
@@ -462,7 +426,8 @@ Dired leaves the arrow visible; the nerd-icons link icon already says it."
          (dired-mode . diff-hl-dired-mode))
   :config
   (global-diff-hl-mode 1)
-  (diff-hl-flydiff-mode 1))           ; update before saving, not just on save
+  (diff-hl-flydiff-mode 1)            ; update before saving, not just on save
+  (diff-hl-margin-mode 1))
 
 ;;;; Languages: Rust and C++
 
@@ -507,8 +472,9 @@ has a .clang-format, so other people's code isn't reformatted."
 (use-package flymake
   :ensure nil
   :config
-  ;; The left fringe belongs to diff-hl.
-  (setq flymake-fringe-indicator-position 'right-fringe)
+  ;; Error markers in the right margin; the left one belongs to diff-hl.
+  (setq flymake-indicator-type 'margins
+        flymake-margin-indicator-position 'right-margin)
   :bind (:map flymake-mode-map
          ("M-n" . flymake-goto-next-error)
          ("M-p" . flymake-goto-prev-error)))
@@ -528,7 +494,24 @@ has a .clang-format, so other people's code isn't reformatted."
       compilation-ask-about-save nil)
 (add-hook 'compilation-filter-hook #'ansi-color-compilation-filter)
 
-;;;; Terminal
+;;;; Terminal UI
+
+;; Kitty keyboard protocol: lets terminals that support it (Ghostty, kitty,
+;; WezTerm) send keys like C-. and C-` that plain terminals can't.
+(use-package kkp
+  :config
+  (global-kkp-mode 1))
+
+(xterm-mouse-mode 1)
+;; Copy to the local clipboard, even over ssh, with OSC 52.
+(setq xterm-extra-capabilities '(setSelection))
+
+;; A solid line between side-by-side windows instead of "|".
+(unless standard-display-table
+  (setq standard-display-table (make-display-table)))
+(set-display-table-slot standard-display-table 'vertical-border ?│)
+
+;;;; Terminal emulator (ghostel)
 
 (use-package ghostel
   :bind (("C-x m" . ghostel)
